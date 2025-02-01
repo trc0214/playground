@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 
+client = commands.Bot(command_prefix="!", intents=discord.Intents.all())
+
 class Buttons(discord.ui.View):
     def __init__(self, *, timeout=180):
         super().__init__(timeout=timeout)
@@ -14,13 +16,13 @@ class Buttons(discord.ui.View):
             return True
         return False
 
-class ButtonCog(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+@client.command()
+async def button(ctx):
+    await ctx.send("This message has buttons!", view=Buttons())
 
-    @commands.command(name='button')
-    async def button_command(self, ctx):
-        await ctx.send("This message has buttons!", view=Buttons())
+import os
+from dotenv import load_dotenv
 
-async def setup(bot):
-    await bot.add_cog(ButtonCog(bot))
+load_dotenv()
+token = os.getenv("DISCORD_TOKEN")
+client.run(token)
