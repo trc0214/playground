@@ -12,6 +12,9 @@ class CourseButton(discord.ui.Button):
             if category.name == self.label:
                 for channel in category.channels:
                     if '筆記' in channel.name:
+                        self.style = discord.ButtonStyle.success
+                        self.disabled = True
+                        self.view.stop()
                         await channel.send(self.message.content)
                         await self.message.delete()
                         return
